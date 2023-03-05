@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "538533559848",
+    "project_id": "flutterradec",
+    "storage_bucket": "flutterradec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538533559848:android:5ad65773a2874f738d3f1d",
+        "android_client_info": {
+          "package_name": "com.sianak.radec_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "538533559848-ktq3in6i72csghbu87m26pam4g1g2oji.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sianak.radec_app",
+            "certificate_hash": "e448d8235f3a9ac4a6ee9d88e7ebd0ef67ae311c"
+          }
+        },
+        {
+          "client_id": "538533559848-s8otfmo9mqous4h4th1qpjotfmj02772.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAV4SYtmWGMO4JSOk9i_mcGxDgvU04zV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "538533559848-s8otfmo9mqous4h4th1qpjotfmj02772.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
