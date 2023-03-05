@@ -23,6 +23,7 @@ class MainApp extends StatelessWidget {
       home: FirebaseAuth.instance.currentUser == null
           ? const LoginScreen()
           : const TaskListScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
