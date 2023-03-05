@@ -169,6 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: Column(
                             children: [
                               Text(
+                                userModel!.selectedLevel,
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              Text(
                                 userModel!.fullName,
                                 style: const TextStyle(fontSize: 18),
                               ),

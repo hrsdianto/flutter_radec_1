@@ -17,6 +17,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var confirmController = TextEditingController();
+  //var userLevelController = TextEditingController();
+
+  List<String> userLevelList = ["Guru", "Siswa"];
+  String? selectedLevel;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +72,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        DropdownButton(
+          dropdownColor: Colors.black26,
+          hint: const Text(
+            "Please select your level here ! ",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.black,
+            ),
+          ),
+          icon: const Icon(Icons.school),
+          value: selectedLevel,
+          onChanged: (newValue) {
+            setState(() {
+              selectedLevel = newValue.toString();
+            });
+          },
+          items: userLevelList.map((ulevel) {
+            return DropdownMenuItem(
+              value: ulevel,
+              child: Text(
+                ulevel,
+                style: const TextStyle(color: Colors.blue),
+              ),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 10),
         TextField(
           controller: fullNameController,
           decoration: InputDecoration(
@@ -129,7 +161,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               if (fullName.isEmpty ||
                   email.isEmpty ||
                   password.isEmpty ||
-                  confirmPass.isEmpty) {
+                  confirmPass.isEmpty ||
+                  selectedLevel == null) {
                 Fluttertoast.showToast(msg: 'Please fill all fields');
                 return;
               }
@@ -171,6 +204,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   await userRef.child(uid).set({
                     'fullName': fullName,
+                    'selectedLevel': selectedLevel,
                     'email': email,
                     'uid': uid,
                     'dt': dt,
