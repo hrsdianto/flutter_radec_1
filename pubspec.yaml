@@ -1,22 +1,23 @@
 name: flutter_radec_1
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
+  sdk: ">=2.19.2 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   firebase_auth: ^3.1.1
   firebase_core: ^1.4.0
+  firebase_core_platform_interface: 4.5.1
   firebase_database: ^8.0.0
   firebase_storage: ^10.0.3
+  flutter:
+    sdk: flutter
   fluttertoast: ^8.0.8
+  google_fonts: ^2.3.1
   image_picker: ^0.8.6+4
   ndialog: ^4.1.0
-  firebase_core_platform_interface: 4.5.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -25,3 +26,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_radec_1/screens/signup_screen.dart';
-import 'package:flutter_radec_1/screens/task_list_screen.dart';
+import 'package:flutter_radec_1/screens/home_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   // ignore: use_build_context_synchronously
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return const TaskListScreen();
+                    return const HomeScreen();
                   }));
                 }
               } on FirebaseAuthException catch (e) {

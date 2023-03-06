@@ -7,16 +7,15 @@ import 'package:flutter_radec_1/models/task_model.dart';
 import 'package:flutter_radec_1/screens/login_screen.dart';
 import 'package:flutter_radec_1/screens/profile_screen.dart';
 import 'package:flutter_radec_1/screens/update_task_screen.dart';
-import 'add_task_screen.dart';
 
-class TaskListScreen extends StatefulWidget {
-  const TaskListScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<TaskListScreen> createState() => _TaskListScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _TaskListScreenState extends State<TaskListScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   User? user;
   DatabaseReference? taskRef;
 
@@ -33,60 +32,62 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Task List'),
+        title: const Text('Radec App'),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return const ProfileScreen();
-                }));
-              },
-              icon: const Icon(Icons.person)),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return const ProfileScreen();
+              }));
+            },
+            icon: const Icon(Icons.person),
+          ),
           IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return AlertDialog(
-                        title: const Text('Confirmation !!!'),
-                        content: const Text('Are you sure to Log Out ? '),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(ctx).pop();
-                            },
-                            child: const Text('No'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(ctx).pop();
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return AlertDialog(
+                      title: const Text('Confirmation !!!'),
+                      content: const Text('Are you sure to Log Out ? '),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
 
-                              FirebaseAuth.instance.signOut();
+                            FirebaseAuth.instance.signOut();
 
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) {
-                                return const LoginScreen();
-                              }));
-                            },
-                            child: const Text('Yes'),
-                          ),
-                        ],
-                      );
-                    });
-              },
-              icon: const Icon(Icons.logout)),
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              return const LoginScreen();
+                            }));
+                          },
+                          child: const Text('Yes'),
+                        ),
+                      ],
+                    );
+                  });
+            },
+            icon: const Icon(Icons.logout),
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const AddTaskScreen();
-          }));
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      //       return const AddTaskScreen();
+      //     }));
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
       body: StreamBuilder(
         stream: taskRef != null ? taskRef!.onValue : null,
         builder: (context, snapshot) {
