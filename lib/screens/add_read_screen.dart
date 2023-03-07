@@ -2,26 +2,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_radec_1/models/read_model.dart';
 
-class UpdateTaskScreen extends StatefulWidget {
-  final ReadModel task;
-  const UpdateTaskScreen({super.key, required this.task});
+class AddReadScreen extends StatefulWidget {
+  const AddReadScreen({super.key});
 
   @override
-  State<UpdateTaskScreen> createState() => _UpdateTaskScreenState();
+  State<AddReadScreen> createState() => _AddReadScreenState();
 }
 
-class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
+class _AddReadScreenState extends State<AddReadScreen> {
   var titleController = TextEditingController();
   var textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    titleController.text = widget.task.titleRead;
-    textController.text = widget.task.textRead;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +21,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text('Edit Read', style: TextStyle(color: Colors.black)),
+        title: const Text('Add Read', style: TextStyle(color: Colors.black)),
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -54,10 +45,12 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
               decoration: const InputDecoration.collapsed(
                   hintText: "Enter the text here"),
             ),
+            const SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () async {
-                  var titleRead = titleController.text.trim();
-                  var textRead = textController.text.trim();
+                  String titleRead = titleController.text.trim();
+                  String textRead = textController.text.trim();
+
                   if (titleRead.isEmpty || textRead.isEmpty) {
                     Fluttertoast.showToast(
                         msg: 'Please provide corrected fill');
@@ -67,19 +60,25 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                   User? user = FirebaseAuth.instance.currentUser;
 
                   if (user != null) {
+                    String uid = user.uid;
+                    int dt = DateTime.now().millisecondsSinceEpoch;
+
                     DatabaseReference taskRef = FirebaseDatabase.instance
                         .reference()
                         .child('data_reads')
-                        .child(user.uid)
-                        .child(widget.task.taskId);
+                        .child(uid);
 
-                    await taskRef.update({
+                    String? taskId = taskRef.push().key;
+
+                    await taskRef.child(taskId).set({
+                      'dt': dt,
                       'titleRead': titleRead,
                       'textRead': textRead,
+                      'taskId': taskId,
                     });
                   }
                 },
-                child: const Text('Update')),
+                child: const Text('Save')),
           ],
         ),
       ),

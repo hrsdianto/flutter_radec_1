@@ -1,21 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_radec_1/screens/add_answer_screen.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
-import 'package:flutter_radec_1/models/task_model.dart';
-import 'package:flutter_radec_1/screens/login_screen.dart';
-import 'package:flutter_radec_1/screens/profile_screen.dart';
+import 'package:flutter_radec_1/models/read_model.dart';
 import 'package:flutter_radec_1/screens/update_task_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class AnswerScreen extends StatefulWidget {
+  const AnswerScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<AnswerScreen> createState() => _AnswerScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AnswerScreenState extends State<AnswerScreen> {
   User? user;
   DatabaseReference? taskRef;
 
@@ -23,8 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      taskRef =
-          FirebaseDatabase.instance.reference().child('tasks').child(user!.uid);
+      taskRef = FirebaseDatabase.instance
+          .reference()
+          .child('data_reads')
+          .child(user!.uid);
     }
     super.initState();
   }
@@ -34,60 +35,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Radec App'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return const ProfileScreen();
-              }));
-            },
-            icon: const Icon(Icons.person),
-          ),
-          IconButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (ctx) {
-                    return AlertDialog(
-                      title: const Text('Confirmation !!!'),
-                      content: const Text('Are you sure to Log Out ? '),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                          },
-                          child: const Text('No'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-
-                            FirebaseAuth.instance.signOut();
-
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) {
-                              return const LoginScreen();
-                            }));
-                          },
-                          child: const Text('Yes'),
-                        ),
-                      ],
-                    );
-                  });
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text('Answer', style: TextStyle(color: Colors.black)),
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(Icons.arrow_back, color: Colors.black54),
+        ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      //       return const AddTaskScreen();
-      //     }));
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),
       body: StreamBuilder(
         stream: taskRef != null ? taskRef!.onValue : null,
         builder: (context, snapshot) {
@@ -97,17 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
             var snapshot2 = event.snapshot.value;
             if (snapshot2 == null) {
               return const Center(
-                child: Text('No Tasks Added Yet'),
+                child: Text('No Read Added Yet'),
               );
             }
 
             Map<String, dynamic> map = Map<String, dynamic>.from(snapshot2);
 
-            var tasks = <TaskModel>[];
+            var tasks = <ReadModel>[];
 
             for (var taskMap in map.values) {
-              TaskModel taskModel =
-                  TaskModel.fromMap(Map<String, dynamic>.from(taskMap));
+              ReadModel taskModel =
+                  ReadModel.fromMap(Map<String, dynamic>.from(taskMap));
 
               tasks.add(taskModel);
             }
@@ -117,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
-                    TaskModel task = tasks[index];
+                    ReadModel task = tasks[index];
 
                     return Container(
                       padding: const EdgeInsets.all(10),
@@ -127,8 +85,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Column(
                         children: [
-                          Text(task.taskName),
-                          Text(getHumanReadableDate(task.dt)),
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  task.titleRead,
+                                  //"You Can Wrap your widget with Flexible Widget and than you can set property of Text using overflow property of Text Widget",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.justify,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                '(${getHumanReadableDate(task.dt)})',
+                                textAlign: TextAlign.right,
+                              ),
+                            ],
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -187,6 +161,15 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
         },
+      ),
+      //floating buttom for add task
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return const AddAnswerScreen();
+          }));
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_radec_1/screens/answer_screen.dart';
 import 'package:flutter_radec_1/screens/login_screen.dart';
+import 'package:flutter_radec_1/screens/read_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/user_model.dart';
-import '../utils/assets.dart';
-import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -54,8 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       children: [
                         header(),
-                        GridView.builder(
-                          itemCount: Assets.menuCourse.length,
+                        GridView(
                           shrinkWrap: true,
                           padding: const EdgeInsets.all(16),
                           physics: const NeverScrollableScrollPhysics(),
@@ -70,24 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisSpacing: 16,
                             mainAxisSpacing: 8,
                           ),
-                          itemBuilder: (context, index) {
-                            Map map = Assets.menuCourse[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Detail(map: map),
-                                  ),
-                                );
-                              },
-                              child: itemGrid(
-                                map['image'],
-                                map['title'],
-                                map['modul'],
-                              ),
-                            );
-                          },
+                          children: <Widget>[
+                            itemGridRead(),
+                            itemGridAnswer(),
+                          ],
                         ),
                       ],
                     ),
@@ -95,6 +80,116 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
+    );
+  }
+
+  Widget itemGridRead() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ReadScreen(),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 0),
+              blurRadius: 6,
+              color: Colors.black38,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Image.asset(
+                  'assets/backend.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Center(
+                child: Text(
+                  "Read",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget itemGridAnswer() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AnswerScreen(),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              offset: Offset(0, 0),
+              blurRadius: 6,
+              color: Colors.black38,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Image.asset(
+                  'assets/frontend.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Center(
+                child: Text(
+                  "Answer",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
     );
   }
 
@@ -183,61 +278,6 @@ class _HomeScreenState extends State<HomeScreen> {
           //     },
           //   ),
           // ),
-        ],
-      ),
-    );
-  }
-
-  Widget itemGrid(String image, String title, int modul) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
-        boxShadow: const [
-          BoxShadow(
-            offset: Offset(0, 0),
-            blurRadius: 6,
-            color: Colors.black38,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Image.asset(
-                image,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Center(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16),
-          //   child: Text(
-          //     '$modul Modul',
-          //     style: const TextStyle(
-          //       color: Colors.black,
-          //       fontSize: 14,
-          //     ),
-          //   ),
-          // ),
-          const SizedBox(height: 16),
         ],
       ),
     );

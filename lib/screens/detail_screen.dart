@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_radec_1/screens/add_task_screen.dart';
 
 class Detail extends StatelessWidget {
   final Map map;
@@ -7,7 +8,7 @@ class Detail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [
+        children: <Widget>[
           Image.asset(
             map['image'],
             fit: BoxFit.cover,
@@ -30,12 +31,19 @@ class Detail extends StatelessWidget {
                   map['title'],
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
-                )
+                ),
               ],
             ),
           ),
-          Container()
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return const AddTaskScreen();
+          }));
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
